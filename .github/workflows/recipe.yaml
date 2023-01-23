@@ -18,12 +18,14 @@ jobs:
       fail-fast: false
       matrix:
         php: ['7.4' ,'8.0']
-        sylius: ["~1.9.0", "~1.10.0", "~1.11.0"]
+        sylius: ["~1.9.0", "~1.10.0", "~1.11.0", "~1.12.0"]
         exclude:
           - php: 8.0
             sylius: "~1.9.0"
           - php: 7.4
             sylius: "~1.11.0"
+          - php: 7.4
+            sylius: "~1.12.0"
 
     steps:
       - name: Setup PHP
@@ -70,21 +72,21 @@ jobs:
       - name: Make sure to install the required version of Sylius
         working-directory: ./sylius
         run: |
-            composer require --no-install --no-scripts --no-progress sylius/sylius="${{ matrix.sylius }}"
+          composer require --no-install --no-scripts --no-progress sylius/sylius="${{ matrix.sylius }}"
 
       - name: Setup some requirements
         working-directory: ./sylius
         run: |
-            composer config --no-plugins allow-plugins true
-            composer config repositories.plugin '{"type": "path", "url": "../plugin/"}'
-            composer config extra.symfony.allow-contrib true
-            composer config secure-http false
-            composer config --unset platform.php
+          composer config --no-plugins allow-plugins true
+          composer config repositories.plugin '{"type": "path", "url": "../plugin/"}'
+          composer config extra.symfony.allow-contrib true
+          composer config secure-http false
+          composer config --unset platform.php
 
       - name: Require plugin without install
         working-directory: ./sylius
         run: |
-          composer require --no-install --no-scripts monsieurbiz/sylius-search-plugin="*@dev"
+          composer require --no-install --no-update monsieurbiz/sylius-search-plugin="*@dev"
 
       - name: Composer install
         working-directory: ./sylius
