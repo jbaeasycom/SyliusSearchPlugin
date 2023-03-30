@@ -50,12 +50,12 @@ class Response implements ResponseInterface
         $this->buildFilters();
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->getPaginator();
     }
 
-    public function count()
+    public function count(): int
     {
         return $this->getPaginator()->getNbResults();
     }
